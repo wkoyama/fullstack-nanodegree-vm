@@ -102,3 +102,4 @@ if __name__ == '__main__':
         httpd.serve_forever()
     except KeyboardInterrupt:
         httpd.shutdown()
+        httpd.server_close()
