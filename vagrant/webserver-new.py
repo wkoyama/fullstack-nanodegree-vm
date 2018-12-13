@@ -85,6 +85,7 @@ class WebServerHandler(http.server.BaseHTTPRequestHandler):
                 output += "<input type='submit' value='Create'>"
                 output += "</form></body></html>"
                 self.wfile.write(output.encode())
+                #render_template('menu.html',restaurant=restaurant, items= items)
                 return
 
             if self.path.endswith("/delete"):
