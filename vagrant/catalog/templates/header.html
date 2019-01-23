@@ -1,0 +1,40 @@
+{#<div class="row top-menu">#}
+{#	<div class="col-md-6">#}
+{#		<a href="{{url_for('index')}}">#}
+{#			<span class="glyphicon glyphicon-home" aria-hidden="true"></span>Todas as Categorias#}
+{#		</a>#}
+{#	</div>#}
+{#</div>#}
+
+<header class="navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
+    <nav class="navbar navbar-dark bg-primary">
+        <a class="navbar-brand" href="{{url_for('index')}}">
+            <span class="fas fa-home" aria-hidden="true"></span> All Categories
+        </a>
+
+        <form class="form-inline">
+            <input name=_csrf_token type=hidden value="{{ csrf_token() }}">
+            {%if 'user_id' not in session %}
+                <a data-toggle="modal" data-target="#login-modal" role="button">
+                    <button class="btn btn-outline-light">Login
+                    <img width="30" height="30" class="d-inline-block align-top img-fluid img-thumbnail" src="{{ url_for('static', filename='blank_user.gif') }}">
+                    </button>
+                </a>
+            {% else %}
+                <a href="{{url_for('disconnect')}}" id="signoutButton">
+                    <button class="btn btn-outline-light" formaction="{{url_for('disconnect')}}" type="submit">Logout
+                    <img width="30" height="30" class="d-inline-block align-top img-fluid img-thumbnail" src="{{ session.picture }}">
+                    </button>
+                </a>
+            {% endif %}
+        <div>
+            {%if 'user_id' not in session %}
+
+            {% else %}
+
+            {% endif %}
+        </div>
+
+        </form>
+    </nav>
+</header>

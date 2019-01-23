@@ -1,0 +1,284 @@
+{% extends "main.html" %}
+
+{% block head %}
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/styles.css') }}">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://apis.google.com/js/platform.js?onload=start"> </script>
+
+    <script>
+        gapi.load('auth2', function() {
+          auth2 = gapi.auth2.init({
+            client_id: '722720881451-cv3estteog0qduf91201gs2m7l9p8ds0.apps.googleusercontent.com',
+            // Scopes to request in addition to 'profile' and 'email'
+            //scope: 'additional_scope'
+          });
+        });
+    </script>
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header" align="center">
+                    <img class="img-login-logo" id="img_logo" src="{{ url_for('static', filename='user-icon-reverse.png') }}">
+                    <h4 class="title-modal-login">Catálogo de Itens</h4>
+                    <span>Cadastre-se ou logue com sua conta Google</span>
+{#					<button type="button" class="close" data-dismiss="modal" aria-label="Close">#}
+{#						<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>#}
+{#					</button>#}
+				</div>
+
+                <!-- Begin # DIV Form -->
+                <div id="div-forms" align="center">
+
+                    <!-- Begin # Login Form -->
+                    <form id="login-form">
+                        <input name=_csrf_token type=hidden value="{{ csrf_token() }}">
+		                <div class="modal-body">
+{#				    		<div id="div-login-msg">#}
+{#                                <div id="icon-login-msg" class="glyphicon glyphicon-chevron-right"></div>#}
+{#                                <span id="text-login-msg">Login with Google</span>#}
+{#                            </div>#}
+                            <div id="result"></div>
+
+                            <div class="g-signin2" id="signinButton" data-onsuccess="onSignIn" data-longtitle="true" data-theme="dark"></div>
+
+        		    	</div>
+{#				        <div class="modal-footer">#}
+{#                            <div>#}
+{#                                <button type="submit" class="btn btn-primary btn-lg btn-block">Login</button>#}
+{#                            </div>#}
+{#				    	    <div>#}
+{#                                <button id="login_lost_btn" type="button" class="btn btn-link">Lost Password?</button>#}
+{#                                <button id="login_register_btn" type="button" class="btn btn-link">Register</button>#}
+{#                            </div>#}
+{#				        </div>#}
+                    </form>
+                    <!-- End # Login Form -->
+
+                    <!-- Begin | Lost Password Form -->
+{#                    <form id="lost-form" style="display:none;">#}
+{#    	    		    <div class="modal-body">#}
+{#		    				<div id="div-lost-msg">#}
+{#                                <div id="icon-lost-msg" class="glyphicon glyphicon-chevron-right"></div>#}
+{#                                <span id="text-lost-msg">Type your e-mail.</span>#}
+{#                            </div>#}
+{#		    				<input id="lost_email" class="form-control" type="text" placeholder="E-Mail (type ERROR for error effect)" required>#}
+{#            			</div>#}
+{#		    		    <div class="modal-footer">#}
+{#                            <div>#}
+{#                                <button type="submit" class="btn btn-primary btn-lg btn-block">Send</button>#}
+{#                            </div>#}
+{#                            <div>#}
+{#                                <button id="lost_login_btn" type="button" class="btn btn-link">Log In</button>#}
+{#                                <button id="lost_register_btn" type="button" class="btn btn-link">Register</button>#}
+{#                            </div>#}
+{#		    		    </div>#}
+{#                    </form>#}
+                    <!-- End | Lost Password Form -->
+
+                    <!-- Begin | Register Form -->
+{#                    <form id="register-form" style="display:none;">#}
+{#            		    <div class="modal-body">#}
+{#		    				<div id="div-register-msg">#}
+{#                                <div id="icon-register-msg" class="glyphicon glyphicon-chevron-right"></div>#}
+{#                                <span id="text-register-msg">Register an account.</span>#}
+{#                            </div>#}
+{#		    				<input id="register_username" class="form-control" type="text" placeholder="Username (type ERROR for error effect)" required>#}
+{#                            <input id="register_email" class="form-control" type="text" placeholder="E-Mail" required>#}
+{#                            <input id="register_password" class="form-control" type="password" placeholder="Password" required>#}
+{#            			</div>#}
+{#		    		    <div class="modal-footer">#}
+{#                            <div>#}
+{#                                <button type="submit" class="btn btn-primary btn-lg btn-block">Register</button>#}
+{#                            </div>#}
+{#                            <div>#}
+{#                                <button id="register_login_btn" type="button" class="btn btn-link">Log In</button>#}
+{#                                <button id="register_lost_btn" type="button" class="btn btn-link">Lost Password?</button>#}
+{#                            </div>#}
+{#		    		    </div>#}
+{#                    </form>#}
+                    <!-- End | Register Form -->
+
+                </div>
+                <!-- End # DIV Form -->
+
+			</div>
+		</div>
+
+
+    <!--END GOOGLE PLUS SIGN IN -->
+
+    <!--FACEBOOK SIGN IN -->
+{#<script>#}
+{#  window.fbAsyncInit = function() {#}
+{#  FB.init({#}
+{#    appId      : '5cba313a9de2d990b062515597dd5aca',#}
+{#    cookie     : true,  // enable cookies to allow the server to access#}
+{#                        // the session#}
+{#    xfbml      : true,  // parse social plugins on this page#}
+{#    version    : 'v2.8' // use version 2.8#}
+{#  });#}
+{#  };#}
+{#  // Load the SDK asynchronously#}
+{#  (function(d, s, id) {#}
+{#    var js, fjs = d.getElementsByTagName(s)[0];#}
+{#    if (d.getElementById(id)) return;#}
+{#    js = d.createElement(s); js.id = id;#}
+{#    js.src = "//connect.facebook.net/en_US/sdk.js";#}
+{#    fjs.parentNode.insertBefore(js, fjs);#}
+{#  }(document, 'script', 'facebook-jssdk'));#}
+{#  // Here we run a very simple test of the Graph API after login is#}
+{#  // successful.  See statusChangeCallback() for when this call is made.#}
+{##}
+{#  function sendTokenToServer() {#}
+{#    var access_token = FB.getAuthResponse()['accessToken'];#}
+{#    console.log(access_token)#}
+{#    console.log('Welcome!  Fetching your information.... ');#}
+{#    FB.api('/me', function(response) {#}
+{#      console.log('Successful login for: ' + response.name);#}
+{#     $.ajax({#}
+{#      type: 'POST',#}
+{#      url: '/fbconnect?state={{STATE}}',#}
+{#      processData: false,#}
+{#      data: access_token,#}
+{#      contentType: 'application/octet-stream; charset=utf-8',#}
+{#      success: function(result) {#}
+{#        // Handle or verify the server response if necessary.#}
+{#        if (result) {#}
+{#          $('#result').html('Login Successful!</br>'+ result + '</br>Redirecting...')#}
+{#         setTimeout(function() {#}
+{#          window.location.href = "/restaurant";#}
+{#         }, 4000);#}
+{#      } else {#}
+{#        $('#result').html('Failed to make a server-side call. Check your configuration and console.');#}
+{#         }#}
+{#      }#}
+{#  });#}
+{#    });#}
+{#  }#}
+{#</script>#}
+
+{##}
+{#<button>#}
+
+
+{#          <fb:login-button scope="public_profile,email" onlogin="sendTokenToServer();">#}
+{#<a href='javascript:sendTokenToServer()'>Login with Facebook</a>#}
+{##}
+{#</fb:login-button>#}
+
+
+{#        </button>#}
+<!--END FACEBOOK SIGN IN -->
+
+{#    <button>#}
+{##}
+{#        <fb:login-button scope="public_profile,email" onlogin="sendTokenToServer();">#}
+{#            <a href='javascript:sendTokenToServer()'>Login with Facebook</a>#}
+{#        </fb:login-button>#}
+{##}
+{#    </button>#}
+    <!--END FACEBOOK SIGN IN -->
+
+{#    <div id="result"></div>#}
+{##}
+{#<button>#}
+{##}
+{##}
+{#          <fb:login-button scope="public_profile,email" onlogin="sendTokenToServer();">#}
+{#            <a href='javascript:sendTokenToServer()'>Login with Facebook</a>#}
+{##}
+{#            </fb:login-button>#}
+{##}
+{##}
+{#        </button>#}
+<!--END FACEBOOK SIGN IN -->
+{% endblock %}
+
+{% block js %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="//apis.google.com/js/platform.js?onload=start" async defer> </script>
+    <script src="{{url_for('static', filename='js/catalog.js')}}"></script>
+
+    <script>
+        $('#signinButton').click(function() {
+            auth2.grantOfflineAccess({'redirect_uri': 'postmessage'}).then(signInCallback);
+        });
+
+        $('#signoutButton').click(function () {
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(signOut);
+        })
+        function signInCallback(json) {
+            authResult = json;
+
+            if (authResult['code']) {
+                // Hide the sign-in button now that the user is authorized, for example:
+                $('#signinButton').attr('style', 'display: none');
+
+
+                {#$( "html" ).load( "/oauth/google", JSON.stringify(json));#}
+
+                {#var xhr = new XMLHttpRequest();#}
+                {#xhr.open('POST', '/oauth/google');#}
+                {#xhr.setRequestHeader('Content-Type', 'application/json');#}
+                {#xhr.onload = function() {#}
+                    {#$("#login-modal").hide();#}
+                    {#console.log('Signed in as: ' + xhr.responseText);#}
+                {# };#}
+                {#xhr.send(JSON.stringify(json));#}
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/oauth/google',
+                    processData: false,
+                    data: JSON.stringify(json),
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    complete: function(result) {
+                        {#$("#login-modal").hide();#}
+                        {#window.location.reload(true);#}
+                        window.location.href = "/catalog";
+                    },
+                    success: function(result) {
+                        {#$("#login-modal").hide();#}
+                        {#window.location.href = "/catalog";#}
+                    }
+                 });
+            }
+        }
+
+        function signOut() {
+            $.ajax({
+                type: 'POST',
+                url: '/disconnect',
+                processData: false,
+                data: JSON.stringify(json),
+                contentType: 'application/json',
+                dataType: 'json',
+                complete: function(result) {
+                    {#window.location.href = "/catalog";#}
+                },
+                success: function(result) {
+
+                }
+            });
+          console.log('User signed out.');
+        }
+    </script>
+
+{% endblock %}

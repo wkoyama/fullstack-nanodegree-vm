@@ -1,0 +1,291 @@
+{% extends "main.html" %}
+{#javascript: showItemDetails( {{ id }} , {{ categoriaId }});#}
+
+{% block head %}
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="google-signin-client_id" content="722720881451-cv3estteog0qduf91201gs2m7l9p8ds0.apps.googleusercontent.com">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/styles.css') }}">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://apis.google.com/js/platform.js?onload=start"> </script>
+
+    <script>
+        gapi.load('auth2', function() {
+          auth2 = gapi.auth2.init({
+            client_id: '722720881451-cv3estteog0qduf91201gs2m7l9p8ds0.apps.googleusercontent.com',
+            // Scopes to request in addition to 'profile' and 'email'
+            //scope: 'additional_scope'
+          });
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+
+    <div class="row divider green">
+		<div class="col-md-12"></div>
+	</div>
+
+    <div class="row banner menu">
+		<div class="col-md-11 col-md-offset-1 padding-none">
+		</div>
+	</div>
+
+	<div class = 'flash'>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul>
+            {% for message in messages %}
+                <li> <strong> {{ message }} </strong> </li>
+            {% endfor %}
+            </ul>
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <div class="content-container row mt-4">
+        <div class="categorias-menu-container col-3 mt-3">
+
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <h2>Categories</h2>
+
+{#                {%if 'user_id' in session %}#}
+                    <a href="{{url_for('newCategory')}}" class="btn btn-primary">
+                        <span class="fas fa-thumbs-up" aria-hidden="true"></span> Add Category
+                    </a>
+{#                {% endif %}#}
+
+
+                <div class="categorias-container mt-3 mb-3">
+                    {% for categoria in categorias %}
+                        <div class="category-item nav-link">
+                            <a id="v-pills-{{categoria.id}}-tab" class="categoria-link" data-toggle="pill" href="#v-pills-{{categoria.id}}" role="tab" aria-controls="v-pills-{{categoria.id}}" aria-selected="true">
+                                <input type="hidden" class="categoriaId" value="{{ categoria.id }}" />
+                                <input type="hidden" class="categoriaName" value="{{ categoria.name }}" />
+                                <span>{{categoria.name}}</span>
+                            </a>
+                            {%if 'user_id' in session and session.get('user_id') == categoria.user_id %}
+                                <a class="ml-2 float-right" href = "{{url_for('deleteCategory', category_id = categoria.id)}}"><i title="Delete Category" class="fas fa-trash-alt"></i></a>
+                                <a class="ml-2 float-right" href = "{{url_for('editCategory', category_id = categoria.id)}}"><i title="Edit Category" class="fas fa-edit"></i></a>
+                            {% endif %}
+                        </div>
+
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="separator"></div>
+
+        <div class="col-8">
+            <div class="tab-content mt-3" id="v-pills-tabContent">
+                <div class="latest-items-container">
+                    {% if title %}
+                        <h2>{{ title }}</h2>
+                        <a class='item-link' href='/catalog/{{ category_id }}/items/add'><i class="fas fa-plus"></i> Add Item</a>
+                    {% else %}
+                        <h2>Latest Items</h2>
+                    {% endif %}
+
+                    <div class='menu-item mt-4'>
+                        <ul>
+                            {% for i in items %}
+                                {{ item(i.id, i.name, i.categoria.name, i.categoria.id) }}
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                </div>
+
+                {% for categoria in categorias %}
+                    <div class="tab-pane fade" id="v-pills-{{categoria.id}}" role="tabpanel" aria-labelledby="v-pills-{{categoria.id}}-tab">
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    {{ render_login_modal() }}
+{% endblock %}
+
+{% block js %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="//apis.google.com/js/platform.js?onload=start" async defer> </script>
+    <script src="{{url_for('static', filename='js/catalog.js')}}"></script>
+
+    <script>
+        $('#signinButton').click(function() {
+            auth2.grantOfflineAccess({'redirect_uri': 'postmessage'}).then(signInCallback);
+        });
+
+        $('#signoutButton').click(function () {
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(signOut);
+        })
+        function signInCallback(json) {
+            authResult = json;
+
+            if (authResult['code']) {
+                // Hide the sign-in button now that the user is authorized, for example:
+                $('#signinButton').attr('style', 'display: none');
+
+
+                {#$( "html" ).load( "/oauth/google", JSON.stringify(json));#}
+
+                {#var xhr = new XMLHttpRequest();#}
+                {#xhr.open('POST', '/oauth/google');#}
+                {#xhr.setRequestHeader('Content-Type', 'application/json');#}
+                {#xhr.onload = function() {#}
+                    {#$("#login-modal").hide();#}
+                    {#console.log('Signed in as: ' + xhr.responseText);#}
+                {# };#}
+                {#xhr.send(JSON.stringify(json));#}
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/oauth/google',
+                    processData: false,
+                    data: JSON.stringify(json),
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    complete: function(result) {
+                        {#$("#login-modal").hide();#}
+                        window.location.reload(true);
+                        {#window.location.href = "/catalog";#}
+                    },
+                    success: function(result) {
+                        {#$("#login-modal").hide();#}
+                        {#window.location.href = "/catalog";#}
+                    }
+                 });
+            }
+        }
+
+        function signOut() {
+            $.ajax({
+                type: 'POST',
+                url: '/disconnect',
+                processData: false,
+                data: JSON.stringify(json),
+                contentType: 'application/json',
+                dataType: 'json',
+                complete: function(result) {
+                    {#window.location.href = "/catalog";#}
+                },
+                success: function(result) {
+
+                }
+            });
+          console.log('User signed out.');
+        }
+    </script>
+
+{% endblock %}
+
+{% macro render_login_modal() %}
+    <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+    	<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header" align="center">
+                    <img class="img-login-logo" id="img_logo" src="{{ url_for('static', filename='user-icon-reverse.png') }}">
+                    <h4 class="title-modal-login">Catálogo de Itens</h4>
+                    <span>Cadastre-se ou logue com sua conta Google</span>
+{#					<button type="button" class="close" data-dismiss="modal" aria-label="Close">#}
+{#						<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>#}
+{#					</button>#}
+				</div>
+
+                <!-- Begin # DIV Form -->
+                <div id="div-forms" align="center">
+
+                    <!-- Begin # Login Form -->
+                    <form id="login-form">
+                        <input name=_csrf_token type=hidden value="{{ csrf_token() }}">
+		                <div class="modal-body">
+{#				    		<div id="div-login-msg">#}
+{#                                <div id="icon-login-msg" class="glyphicon glyphicon-chevron-right"></div>#}
+{#                                <span id="text-login-msg">Login with Google</span>#}
+{#                            </div>#}
+                            <div id="result"></div>
+
+                            <div class="g-signin2" id="signinButton" data-onsuccess="onSignIn" data-longtitle="true" data-theme="dark"></div>
+
+        		    	</div>
+{#				        <div class="modal-footer">#}
+{#                            <div>#}
+{#                                <button type="submit" class="btn btn-primary btn-lg btn-block">Login</button>#}
+{#                            </div>#}
+{#				    	    <div>#}
+{#                                <button id="login_lost_btn" type="button" class="btn btn-link">Lost Password?</button>#}
+{#                                <button id="login_register_btn" type="button" class="btn btn-link">Register</button>#}
+{#                            </div>#}
+{#				        </div>#}
+                    </form>
+                    <!-- End # Login Form -->
+
+                    <!-- Begin | Lost Password Form -->
+{#                    <form id="lost-form" style="display:none;">#}
+{#    	    		    <div class="modal-body">#}
+{#		    				<div id="div-lost-msg">#}
+{#                                <div id="icon-lost-msg" class="glyphicon glyphicon-chevron-right"></div>#}
+{#                                <span id="text-lost-msg">Type your e-mail.</span>#}
+{#                            </div>#}
+{#		    				<input id="lost_email" class="form-control" type="text" placeholder="E-Mail (type ERROR for error effect)" required>#}
+{#            			</div>#}
+{#		    		    <div class="modal-footer">#}
+{#                            <div>#}
+{#                                <button type="submit" class="btn btn-primary btn-lg btn-block">Send</button>#}
+{#                            </div>#}
+{#                            <div>#}
+{#                                <button id="lost_login_btn" type="button" class="btn btn-link">Log In</button>#}
+{#                                <button id="lost_register_btn" type="button" class="btn btn-link">Register</button>#}
+{#                            </div>#}
+{#		    		    </div>#}
+{#                    </form>#}
+                    <!-- End | Lost Password Form -->
+
+                    <!-- Begin | Register Form -->
+{#                    <form id="register-form" style="display:none;">#}
+{#            		    <div class="modal-body">#}
+{#		    				<div id="div-register-msg">#}
+{#                                <div id="icon-register-msg" class="glyphicon glyphicon-chevron-right"></div>#}
+{#                                <span id="text-register-msg">Register an account.</span>#}
+{#                            </div>#}
+{#		    				<input id="register_username" class="form-control" type="text" placeholder="Username (type ERROR for error effect)" required>#}
+{#                            <input id="register_email" class="form-control" type="text" placeholder="E-Mail" required>#}
+{#                            <input id="register_password" class="form-control" type="password" placeholder="Password" required>#}
+{#            			</div>#}
+{#		    		    <div class="modal-footer">#}
+{#                            <div>#}
+{#                                <button type="submit" class="btn btn-primary btn-lg btn-block">Register</button>#}
+{#                            </div>#}
+{#                            <div>#}
+{#                                <button id="register_login_btn" type="button" class="btn btn-link">Log In</button>#}
+{#                                <button id="register_lost_btn" type="button" class="btn btn-link">Lost Password?</button>#}
+{#                            </div>#}
+{#		    		    </div>#}
+{#                    </form>#}
+                    <!-- End | Register Form -->
+
+                </div>
+                <!-- End # DIV Form -->
+
+			</div>
+		</div>
+	</div>
+{%- endmacro %}
+
+{% macro item(id, name, categoriaName, categoriaId) %}
+    <li class='item'><a class='item-link' href="/catalog/items/{{ id }}"><i class="fas fa-arrow-right"></i> {{ name }}</a>
+        <span class='item-categoria'>({{ categoriaName }})</span>
+    </li>
+{% endmacro %}
