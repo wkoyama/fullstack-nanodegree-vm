@@ -13,7 +13,7 @@
         </a>
 
         <form class="form-inline">
-            <input name=_csrf_token type=hidden value="{{ csrf_token() }}">
+{#            <input name=_csrf_token type=hidden value="{{ csrf_token() }}">#}
             {%if 'user_id' not in session %}
                 <a data-toggle="modal" data-target="#login-modal" role="button">
                     <button class="btn btn-outline-light">Login
