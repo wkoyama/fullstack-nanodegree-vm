@@ -1,3 +1,5 @@
+# Catálogo de itens
+
 ## Visão geral do projeto
 
 Aplicativo que fornece uma lista de itens para uma variedade de categorias, bem como um sistema de registro e autenticação de usuários pelo Google, caso o usuário não exista ele registra o usuário automaticamente. Usuários registrados terão a capacidade de postar, editar e excluir suas próprias categorias e itens.
