@@ -1,9 +1,6 @@
 # Catálogo de itens
 
-## Visão geral do projeto
-
 Aplicativo que fornece uma lista de itens para uma variedade de categorias, bem como um sistema de registro e autenticação de usuários pelo Google, caso o usuário não exista ele registra o usuário automaticamente. Usuários registrados terão a capacidade de postar, editar e excluir suas próprias categorias e itens.
-
 
 ## Passo-a-passo
 
@@ -26,3 +23,14 @@ Após concluído a instalação do Vagrant e VirtualBox do passo 1, baixar o pro
 - O ideal é ter 2 terminais abertos. No primeiro iniciar o servidor do Redis com o comando `redis-server &`
 - No outro terminal, executar `python app.py`.
 - Acessar e testar o aplicativo visitando http://localhost:5000 localmente
+
+## Como usar
+
+O sistema exibe em modo leitura todos os últimos itens cadastrados com sua respectiva categoria.
+Para usar o sistema cada usuário pode alterar/cadastrar/deletar somente itens na categoria que ele criou. 
+
+- Cadastrar uma categoria, clique em "Add category"
+- Editar categoria, caso você seja o criador, aparecerá um lápis ao lado do nome da categoria
+- Deletar categoria, semelhante ao editar mas com uma lixeira
+- Adicionar item é necessário entrar na categoria, terá uma opção "+ Add Items"
+- Editar e remover itens aparece ao visualizar os detalhes do item
