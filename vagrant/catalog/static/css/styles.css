@@ -1,3 +1,19 @@
+input:invalid {
+  box-shadow: 0 0 5px 1px red;
+}
+
+textarea:invalid {
+  box-shadow: 0 0 5px 1px red;
+}
+
+input:focus:invalid {
+  outline: none;
+}
+
+textarea:focus:invalid {
+  outline: none;
+}
+
 .img-login-logo {
 	width: 30vw;
 	max-width: 200px;
