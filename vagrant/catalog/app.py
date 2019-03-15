@@ -23,7 +23,7 @@ from ratelimit import ratelimit, get_view_rate_limit
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///catalogitems.db'
-app.secret_key = 'super secret key'
+app.secret_key = "b'\xcaHP\xba\x88\xba\x0c\xd8{m\x14\x99\xf6\xf3Vv'"
 app.config['SESSION_TYPE'] = 'filesystem'
 # csrf = CSRFProtect(app)
 auth = HTTPBasicAuth()
