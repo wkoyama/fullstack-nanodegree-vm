@@ -22,7 +22,7 @@ from oauth2client.client import FlowExchangeError
 from ratelimit import ratelimit, get_view_rate_limit
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///catalogitems.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///catalogitems.db'
 app.secret_key = "b'\xcaHP\xba\x88\xba\x0c\xd8{m\x14\x99\xf6\xf3Vv'"
 app.config['SESSION_TYPE'] = 'filesystem'
 # csrf = CSRFProtect(app)
@@ -35,7 +35,7 @@ CLIENT_ID = json.loads(
 APPLICATION_NAME = "Catalog Items Application"
 
 # Connect to Database and create database session
-engine = create_engine('sqlite:///catalogitems.db')
+engine = create_engine('postgresql:///catalogitems.db')
 Base.metadata.bind = engine
 
 DBSession = scoped_session(sessionmaker(bind=engine))
