@@ -37,7 +37,7 @@ class Usuario(Base):
     def serialize(self):
         """Return object data in easily serializeable format"""
         return {
-            'name': self.name,
+            'username': self.username,
             'email': self.email,
             'picture': self.picture,
             'id': self.id

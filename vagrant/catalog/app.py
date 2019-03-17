@@ -35,7 +35,7 @@ CLIENT_ID = json.loads(
 APPLICATION_NAME = "Catalog Items Application"
 
 # Connect to Database and create database session
-engine = create_engine('postgresql+psycopg2://grader:grader@localhost:5432/catalogitens')
+engine = create_engine('postgresql+psycopg2://localhost:5432/catalogitens')
 Base.metadata.bind = engine
 
 DBSession = scoped_session(sessionmaker(bind=engine))
@@ -521,7 +521,7 @@ def verify_password(token, username, password):
 
 
 def createUser(login_session):
-    newUser = Usuario(name=login_session['username'], email=login_session[
+    newUser = Usuario(username=login_session['username'], email=login_session[
                    'email'], picture=login_session['picture'])
     session.add(newUser)
     session.commit()
