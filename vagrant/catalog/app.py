@@ -103,7 +103,7 @@ def newCategory():
     if 'username' not in login_session:
         return redirect('/login')
 
-    checkToken = verify_password(login_session['user_token'], None)
+    checkToken = verify_password(login_session['user_token'], login_session['username'], None)
     if checkToken is False:
         flash('Expired time!! Log in again!')
         disconnect()
@@ -128,7 +128,7 @@ def editCategory(category_id):
     if 'username' not in login_session:
         return redirect('/login')
 
-    checkToken = verify_password(login_session['user_token'], None)
+    checkToken = verify_password(login_session['user_token'], login_session['username'], None)
     if checkToken is False:
         flash('Expired time!! Log in again!')
         disconnect()
@@ -221,7 +221,7 @@ def addItems(category_id):
     if 'username' not in login_session:
         return redirect('/login')
 
-    checkToken = verify_password(login_session['user_token'], None)
+    checkToken = verify_password(login_session['user_token'], login_session['username'], None)
     if checkToken is False:
         flash('Expired time!! Log in again!')
         disconnect()
@@ -242,7 +242,7 @@ def addItem(category_id):
     if 'username' not in login_session:
         return redirect('/login')
 
-    checkToken = verify_password(login_session['user_token'], None)
+    checkToken = verify_password(login_session['user_token'], login_session['username'], None)
     if checkToken is False:
         flash('Expired time!! Log in again!')
         disconnect()
@@ -270,7 +270,7 @@ def showEditItem(item_id):
     if 'username' not in login_session:
         return redirect('/login')
 
-    checkToken = verify_password(login_session['user_token'], None)
+    checkToken = verify_password(login_session['user_token'], login_session['username'], None)
     if checkToken is False:
         flash('Expired time!! Log in again!')
         disconnect()
@@ -291,7 +291,7 @@ def editItem(item_id):
     if 'username' not in login_session:
         return redirect('/login')
 
-    checkToken = verify_password(login_session['user_token'], None)
+    checkToken = verify_password(login_session['user_token'], login_session['username'], None)
     if checkToken is False:
         flash('Expired time!! Log in again!')
         disconnect()
@@ -315,7 +315,7 @@ def showDeleteItem(item_id):
     if 'username' not in login_session:
         return redirect('/login')
 
-    checkToken = verify_password(login_session['user_token'], None)
+    checkToken = verify_password(login_session['user_token'], login_session['username'], None)
     if checkToken is False:
         flash('Expired time!! Log in again!')
         disconnect()
@@ -337,7 +337,7 @@ def deleteItem(item_id):
     if 'username' not in login_session:
         return redirect('/login')
 
-    checkToken = verify_password(login_session['user_token'], None)
+    checkToken = verify_password(login_session['user_token'], login_session['username'], None)
     if checkToken is False:
         flash('Expired time!! Log in again!')
         disconnect()
@@ -496,16 +496,16 @@ def gdisconnect():
 
 
 @auth.verify_password
-def verify_password(username_or_token, password):
+def verify_password(token, username, password):
     # Try to see if it's a token first
 
-    user_id = Usuario.verify_auth_token(username_or_token)
+    user_id = Usuario.verify_auth_token(token)
 
     if user_id:
         user = session.query(Usuario).filter_by(id=user_id).one()
     else:
         user = session.query(Usuario)\
-            .filter_by(username=username_or_token).first()
+            .filter_by(username=username).first()
         if not user or not user.verify_password(password):
             return False
     g.user = user
@@ -536,5 +536,5 @@ def getUserID(email):
 
 
 if __name__ == '__main__':
-    app.debug = True
+    app.debug = False
     app.run(host='0.0.0.0', port=5000)
