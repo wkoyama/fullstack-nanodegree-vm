@@ -7,7 +7,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.orm import backref
 from sqlalchemy.ext.declarative import declarative_base
 from passlib.apps import custom_app_context as pwd_context
-from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from itsdangerous import TimedJSONWebSignatureSerializer
 from itsdangerous import BadSignature, SignatureExpired
 
 Base = declarative_base()
@@ -50,12 +50,11 @@ class Usuario(Base):
         return pwd_context.verify(password, self.password_hash)
 
     def generate_auth_token(self, expiration=3600000):
-        s = Serializer(secret_key, expires_in=expiration)
-        return s.dumps({'id': self.id})
+        s = TimedJSONWebSignatureSerializer(secret_key)
+        return s.dumps({"id": self.id})
 
-    @staticmethod
     def verify_auth_token(token):
-        s = Serializer(secret_key)
+        s = TimedJSONWebSignatureSerializer(secret_key)
         try:
             data = s.loads(token, return_header=True)
         except SignatureExpired:
@@ -64,9 +63,8 @@ class Usuario(Base):
             return None
         except BadSignature:
             # Invalid Token
-            print('Valid Token, but expired')
+            print('Invalid Token')
             return None
-        print(data[0])
         user_id = data[0].get("id")
         return user_id
 
