@@ -442,15 +442,17 @@ def gconnect(auth_code):
 
     # STEP 4 - Make token
     token = user.generate_auth_token(3600000)
+    login_session['user_token'] = token
+
     # see if user exists
     user_id = getUserID(email)
     if not user_id:
         user_id = createUser(login_session)
+
     login_session['user_id'] = user_id
     login_session['username'] = data["name"]
     login_session['email'] = data["email"]
     login_session['picture'] = data["picture"]
-    login_session['user_token'] = token
 
     response = make_response(redirect(url_for('index')), 302)
     response.headers['Content-Type'] = 'application/json'
@@ -526,6 +528,9 @@ def createUser(login_session):
     session.add(newUser)
     session.commit()
     user = session.query(Usuario).filter_by(email=login_session['email']).one()
+    token = user.generate_auth_token(3600000)
+    login_session['user_token'] = token
+
     return user.id
 
 
