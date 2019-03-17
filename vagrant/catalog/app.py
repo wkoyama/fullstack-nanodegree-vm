@@ -441,7 +441,7 @@ def gconnect(auth_code):
         session.commit()
 
     # STEP 4 - Make token
-    token = user.generate_auth_token(3600)
+    token = user.generate_auth_token(3600000)
     # see if user exists
     user_id = getUserID(email)
     if not user_id:
