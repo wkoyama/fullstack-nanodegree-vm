@@ -49,7 +49,7 @@ class Usuario(Base):
     def verify_password(self, password):
         return pwd_context.verify(password, self.password_hash)
 
-    def generate_auth_token(self, expiration=10000):
+    def generate_auth_token(self, expiration=3600):
         s = Serializer(secret_key, expires_in=expiration)
         return s.dumps({'id': self.id})
 
