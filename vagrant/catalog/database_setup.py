@@ -66,7 +66,8 @@ class Usuario(Base):
             # Invalid Token
             print('Valid Token, but expired')
             return None
-        user_id = data['id']
+        print(data[0])
+        user_id = data[0].id
         return user_id
 
 
