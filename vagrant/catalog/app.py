@@ -503,11 +503,13 @@ def verify_password(token, username, password):
 
     if user_id:
         user = session.query(Usuario).filter_by(id=user_id).one()
-    else:
+    elif user_id == None or username != None:
         user = session.query(Usuario)\
             .filter_by(username=username).first()
         if not user or not user.verify_password(password):
             return False
+    else:
+        return False
     g.user = user
     return True
 
