@@ -57,7 +57,7 @@ class Usuario(Base):
     def verify_auth_token(token):
         s = Serializer(secret_key)
         try:
-            data = s.loads(token)
+            data = s.loads(token, return_header=True)
         except SignatureExpired:
             # Valid Token, but expired
             print('Valid Token, but expired')
