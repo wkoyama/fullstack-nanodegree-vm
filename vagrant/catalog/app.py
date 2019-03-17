@@ -22,7 +22,7 @@ from oauth2client.client import FlowExchangeError
 from ratelimit import ratelimit, get_view_rate_limit
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://localhost:5432/catalogitens'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://grader:grader@localhost:5432/catalogitens'
 app.secret_key = "b'\xcaHP\xba\x88\xba\x0c\xd8{m\x14\x99\xf6\xf3Vv'"
 app.config['SESSION_TYPE'] = 'filesystem'
 # csrf = CSRFProtect(app)
@@ -35,7 +35,7 @@ CLIENT_ID = json.loads(
 APPLICATION_NAME = "Catalog Items Application"
 
 # Connect to Database and create database session
-engine = create_engine('postgresql+psycopg2://localhost:5432/catalogitens')
+engine = create_engine('postgresql+psycopg2://grader:grader@localhost:5432/catalogitens')
 Base.metadata.bind = engine
 
 DBSession = scoped_session(sessionmaker(bind=engine))
@@ -500,7 +500,7 @@ def verify_password(username_or_token, password):
     # Try to see if it's a token first
 
     user_id = Usuario.verify_auth_token(username_or_token)
-    
+
     if user_id:
         user = session.query(Usuario).filter_by(id=user_id).one()
     else:

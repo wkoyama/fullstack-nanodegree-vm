@@ -108,7 +108,7 @@ class Item(Base):
         }
 
 
-url = 'postgresql+psycopg2://localhost:5432/catalogitens'
+url = 'postgresql+psycopg2://grader:grader@localhost:5432/catalogitens'
 engine = create_engine(url, client_encoding='utf8')
 
 Base.metadata.create_all(engine)
