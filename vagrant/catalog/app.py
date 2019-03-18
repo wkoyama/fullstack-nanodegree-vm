@@ -505,6 +505,12 @@ def verify_password(token, username, password):
 
     user_id = Usuario.verify_auth_token(token)
 
+    if not user_id and username:
+        user = session.query(Usuario)\
+            .filter_by(username=username).first()
+        g.user = user
+        return True
+
     if user_id:
         user = session.query(Usuario).filter_by(id=user_id).one()
     elif username:
