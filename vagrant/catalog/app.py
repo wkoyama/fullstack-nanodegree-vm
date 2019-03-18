@@ -218,6 +218,7 @@ def showItem(item_id):
 
 @app.route('/catalog/<int:category_id>/items/add', methods=["GET"])
 def addItems(category_id):
+    print(login_session)
     if 'username' not in login_session:
         return redirect('/login')
 
@@ -239,6 +240,7 @@ def addItems(category_id):
 
 @app.route('/catalog/<int:category_id>/items/new', methods=["POST"])
 def addItem(category_id):
+    print(login_session)
     if 'username' not in login_session:
         return redirect('/login')
 
@@ -505,7 +507,7 @@ def verify_password(token, username, password):
 
     if user_id:
         user = session.query(Usuario).filter_by(id=user_id).one()
-    elif user_id == None or username != None:
+    elif username:
         user = session.query(Usuario)\
             .filter_by(username=username).first()
         if not user or not user.verify_password(password):
@@ -527,6 +529,7 @@ def createUser(login_session):
                    'email'], picture=login_session['picture'])
     session.add(newUser)
     session.commit()
+    
     user = session.query(Usuario).filter_by(email=login_session['email']).one()
     token = user.generate_auth_token(3600000)
     login_session['user_token'] = token
